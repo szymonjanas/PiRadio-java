@@ -1,45 +1,58 @@
 package com.janas.PiRadio.Radio;
 
-
-import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Radio {
+public class Radio extends Thread {
+
+    private static Radio instance = null;
+
+    private String url;
+    private static boolean init = false;
 
     private URLConnection connection = null;
     private Player player = null;
 
+    public static void init(String url){
+        if (init){
+            instance.turnOff();
+        }
+        instance = null;
+        instance = new Radio(url);
+        instance.start();
+        init = true;
+    }
 
-    public void play(String url){
+    private Radio(String url){
+        this.url = url;
+    }
+
+    public void run(){
         try {
-            if (connection == null && player == null){
-                init("http://31.192.216.8:80/rmf_fm");
-            }
+            connection = new URL (url).openConnection();
+            connection.connect();
+            player = new Player(connection.getInputStream());
             player.play();
         } catch (Exception e){
-            System.out.println("Exception: " + e.toString());
+            System.out.println("Exception 2: " + e.toString());
         }
     }
 
-    public void init(String url) throws IOException, JavaLayerException {
-        connection = new URL (url).openConnection();
-        connection.connect();
-        player = new Player(connection.getInputStream());
+    public static Radio getInstance(){
+        return instance;
     }
 
-    public void stop(){
+    public void turnOff(){
         player.close();
+        player = null;
+        connection = null;
+        init = false;
     }
 
-
-
-
-
-
-
+    public static boolean isInit(){
+        return init;
+    }
 
 }
