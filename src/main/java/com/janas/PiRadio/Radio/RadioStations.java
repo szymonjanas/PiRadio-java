@@ -12,16 +12,27 @@ public class RadioStations {
 
     private static File file = new File("radio-stations.txt");
 
+    public static void init(){
+        load();
+    }
+
     public static String getStation(String name){
-        if (stations.size() == 0){
-            load();
-            save();
-        }
         return stations.get(name);
     }
 
     public static void putStation(String name, String url){
         stations.put(name, url);
+        save();
+    }
+
+    public static String getStationsNames(){
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry entry: stations.entrySet())
+        {
+            builder.append(entry.getKey());
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 
     public static void save() {
