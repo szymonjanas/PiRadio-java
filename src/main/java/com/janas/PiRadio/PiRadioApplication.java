@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PiRadioApplication {
 
 	public static void main(String[] args) {
-		RadioStations.init();
 		SpringApplication.run(PiRadioApplication.class, args);
 	}
 

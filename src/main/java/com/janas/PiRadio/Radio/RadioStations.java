@@ -1,31 +1,39 @@
 package com.janas.PiRadio.Radio;
 
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+@Component
 public class RadioStations {
 
-    private static Map<String, String> stations = new HashMap<>();
+    private Map<String, String> stations = new HashMap<>();
 
-    private static File file = new File("radio-stations.txt");
+    private File file = new File("radio-stations.txt");
 
-    public static void init(){
+    public RadioStations(){
         load();
     }
 
-    public static String getStation(String name){
+    public String getStation(String name){
         return stations.get(name);
     }
 
-    public static void putStation(String name, String url){
+    public void putStation(String name, String url){
         stations.put(name, url);
         save();
     }
 
-    public static String getStationsNames(){
+    public void deleteStation(String name){
+        stations.remove(name);
+        save();
+    }
+
+    public String getStationsNames(){
         StringBuilder builder = new StringBuilder();
         for (Map.Entry entry: stations.entrySet())
         {
@@ -35,7 +43,7 @@ public class RadioStations {
         return builder.toString();
     }
 
-    public static void save() {
+    public void save() {
         try {
             FileWriter writer = new FileWriter(file);
             StringBuilder builder = new StringBuilder();
@@ -54,7 +62,7 @@ public class RadioStations {
         }
     }
 
-    public static void load(){
+    public void load(){
         try {
             Scanner reader = new Scanner(file);
             ArrayList<String> data = new ArrayList<>();

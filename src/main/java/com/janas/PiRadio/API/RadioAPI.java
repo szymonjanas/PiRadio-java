@@ -2,11 +2,15 @@ package com.janas.PiRadio.API;
 
 import com.janas.PiRadio.Radio.Radio;
 import com.janas.PiRadio.Radio.RadioStations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/radio")
 public class RadioAPI {
+
+    @Autowired
+    private RadioStations radioStations;
 
     @GetMapping("/validate")
     public String validate(){
@@ -16,7 +20,7 @@ public class RadioAPI {
     @GetMapping("/on/{name}")
     public void turnOnRadio(@PathVariable("name") String name ){
         try {
-            Radio.init(RadioStations.getStation(name));
+            Radio.init(radioStations.getStation(name));
         } catch (Exception e){
             System.out.println("Exception: " + e.toString());
         }
@@ -29,11 +33,16 @@ public class RadioAPI {
 
     @GetMapping("/stations")
     public String getStations(){
-        return RadioStations.getStationsNames();
+        return radioStations.getStationsNames();
     }
 
     @GetMapping("/add/{name}")
-    public void putStations(@PathVariable("name") String name, @RequestBody String url){
-        RadioStations.putStation(name, url);
+    public void putStation(@PathVariable("name") String name, @RequestBody String url){
+        radioStations.putStation(name, url);
+    }
+
+    @DeleteMapping("/delete/{name}")
+    public void deleteStation(@PathVariable("name") String name){
+        radioStations.deleteStation(name);
     }
 }
