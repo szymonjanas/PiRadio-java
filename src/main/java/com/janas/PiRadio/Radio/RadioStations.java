@@ -28,14 +28,16 @@ public class RadioStations {
         return "";
     }
 
-    public void putStation(String name, String url){
+    public void postStation(String name, String url){
         stations.put(name, url);
         save();
     }
 
     public void deleteStation(String name){
-        stations.remove(name);
-        save();
+        if (stations.containsKey(name)){
+            stations.remove(name);
+            save();
+        }
     }
 
     public String getStationsNames(){

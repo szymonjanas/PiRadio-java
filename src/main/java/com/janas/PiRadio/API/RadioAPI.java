@@ -39,7 +39,7 @@ public class RadioAPI {
         return radioStations.getStationsNames();
     }
 
-    @GetMapping("/add/{name}")
+    @PostMapping("/add/{name}")
     public void putStation(@PathVariable("name") String name, @RequestBody String url){
         radioStations.putStation(name, url);
     }
