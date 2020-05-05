@@ -1,26 +1,22 @@
 package com.janas.PiRadio.API;
 
 import com.janas.PiRadio.Radio.Radio;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.janas.PiRadio.Radio.RadioStations;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/radio")
 public class RadioAPI {
-
-    Radio radio = null;
 
     @GetMapping("/validate")
     public String validate(){
         return "VALIDATION OK";
     }
 
-    @GetMapping("/on")
-    public void turnOnRadio(){
-        radio = new Radio();
+    @GetMapping("/on/{name}")
+    public void turnOnRadio(@PathVariable("name") String name ){
         try {
-            radio.play("http://31.192.216.8:80/rmf_fm");
+            Radio.init(RadioStations.getStation(name));
         } catch (Exception e){
             System.out.println("Exception: " + e.toString());
         }
@@ -28,11 +24,16 @@ public class RadioAPI {
 
     @GetMapping("/off")
     public void turnOffRadio(){
-        if (radio != null){
-            radio.stop();
-        }
+        Radio.getInstance().turnOff();
     }
 
+    @GetMapping("/stations")
+    public String getStations(){
+        return RadioStations.getStationsNames();
+    }
 
+    @GetMapping("/add/{name}")
+    public void putStations(@PathVariable("name") String name, @RequestBody String url){
+        RadioStations.putStation(name, url);
+    }
 }
-
