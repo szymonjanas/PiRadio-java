@@ -13,14 +13,19 @@ public class RadioStations {
 
     private Map<String, String> stations = new HashMap<>();
 
-    private File file = new File("radio-stations.txt");
+    private File file;
 
     public RadioStations(){
+        String path = "/home/" + System.getProperty("user.name") + "/radio-stations.txt";
+        file = new File(path);
         load();
     }
 
     public String getStation(String name){
-        return stations.get(name);
+        if (stations.containsKey(name)){
+            return stations.get(name);
+        }
+        return "";
     }
 
     public void putStation(String name, String url){

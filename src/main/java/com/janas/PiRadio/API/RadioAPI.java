@@ -20,7 +20,10 @@ public class RadioAPI {
     @GetMapping("/on/{name}")
     public void turnOnRadio(@PathVariable("name") String name ){
         try {
-            Radio.init(radioStations.getStation(name));
+            String path = radioStations.getStation(name);
+            if (path.length() > 0){
+                Radio.init(path);
+            }
         } catch (Exception e){
             System.out.println("Exception: " + e.toString());
         }
