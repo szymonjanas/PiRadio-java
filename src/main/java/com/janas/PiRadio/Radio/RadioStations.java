@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 @Component
@@ -18,7 +16,7 @@ public class RadioStations {
 
     public String path = null;
 
-    private Map<String, String> stations = new HashMap<>();
+    private ArrayList<RadioStationModel> stations = new ArrayList<>();
 
     private File file;
 
@@ -39,51 +37,57 @@ public class RadioStations {
         load();
     }
 
-    public String getStation(String name){
-        if (stations.containsKey(name)){
-            return stations.get(name);
+    private int getIndex(String name){
+        for (int index = 0; index < stations.size(); ++index){
+            if (stations.get(index).getName().equals(name))
+                return index;
         }
-        return "";
+        return -1;
     }
 
-    public boolean postStation(String name, String url){
-        stations.put(name, url);
+    public RadioStationModel getStation(String name){
+        if (contains(name)){
+            return stations.get(getIndex(name));
+        }
+        return null;
+    }
+
+    public boolean postStation(RadioStationModel station){
+        stations.add(station);
         if (save()){
             return true;
-        } else {
-            return false;
+        } else return false;
+    }
+
+    public boolean contains(String name){
+        for (int index = 0; index < stations.size(); ++index){
+            if (stations.get(index).getName().equals(name))
+                return true;
         }
+        return false;
     }
 
     public boolean deleteStation(String name){
-        if (stations.containsKey(name)){
-            stations.remove(name);
+        if (contains(name)){
+            stations.remove(getStation(name));
             save();
             return true;
-        } else {
-            return false;
-        }
+        } else return false;
     }
 
-    public String getStationsNames(){
-        StringBuilder builder = new StringBuilder();
-        for (Map.Entry entry: stations.entrySet())
-        {
-            builder.append(entry.getKey());
-            builder.append("\n");
-        }
-        return builder.toString();
+    public Iterable<RadioStationModel> getStations(){
+        return stations;
     }
 
     public boolean save() {
         try {
             FileWriter writer = new FileWriter(file);
             StringBuilder builder = new StringBuilder();
-            for (Map.Entry entry: stations.entrySet())
+            for (RadioStationModel model: stations)
             {
-                builder.append(entry.getKey());
+                builder.append(model.getName());
                 builder.append("\n");
-                builder.append(entry.getValue());
+                builder.append(model.getUrl());
                 builder.append("\n");
             }
             writer.write(builder.toString());
@@ -104,11 +108,10 @@ public class RadioStations {
             }
             reader.close();
             for (int i=0; i < data.size(); i+=2){
-                stations.put(data.get(i), data.get(i+1));
+                stations.add(new RadioStationModel(data.get(i), data.get(i+1)));
             }
         } catch (Exception e){
             System.out.println("Exception from load file: " + e.toString());
         }
     }
-
 }
