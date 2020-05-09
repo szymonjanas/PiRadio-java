@@ -1,5 +1,6 @@
 package com.janas.PiRadio.Radio;
 
+import com.janas.PiRadio.Support.OSValidator;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -11,12 +12,29 @@ import java.util.Scanner;
 @Component
 public class RadioStations {
 
+    private static String windowsDefaultPath = "radio-stations.txt";
+    private static String linuxDefaultPath = "/home/pi/radio-stations.txt";
+    public static String givenPath = null;
+
+    public String path = null;
+
     private Map<String, String> stations = new HashMap<>();
 
     private File file;
 
     public RadioStations(){
-        String path = "/home/" + System.getProperty("user.name") + "/radio-stations.txt";
+        if (givenPath != null){
+            path = givenPath;
+        } else {
+            switch (OSValidator.getSystemName()){
+                case linux:
+                    path = linuxDefaultPath;
+                    break;
+                case windows:
+                    path = windowsDefaultPath;
+                    break;
+            }
+        }
         file = new File(path);
         load();
     }
@@ -28,15 +46,22 @@ public class RadioStations {
         return "";
     }
 
-    public void postStation(String name, String url){
+    public boolean postStation(String name, String url){
         stations.put(name, url);
-        save();
+        if (save()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void deleteStation(String name){
+    public boolean deleteStation(String name){
         if (stations.containsKey(name)){
             stations.remove(name);
             save();
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -50,7 +75,7 @@ public class RadioStations {
         return builder.toString();
     }
 
-    public void save() {
+    public boolean save() {
         try {
             FileWriter writer = new FileWriter(file);
             StringBuilder builder = new StringBuilder();
@@ -63,9 +88,10 @@ public class RadioStations {
             }
             writer.write(builder.toString());
             writer.close();
-
+            return true;
         } catch (Exception e){
             System.out.println("Exception from save file: " + e.toString());
+            return false;
         }
     }
 
