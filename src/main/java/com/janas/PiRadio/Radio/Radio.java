@@ -25,6 +25,10 @@ public class Radio extends Thread {
         init = true;
     }
 
+    public static Radio getInstance(){
+        return instance;
+    }
+
     private Radio(String url){
         this.url = url;
     }
@@ -38,10 +42,6 @@ public class Radio extends Thread {
         } catch (Exception e){
             System.out.println("Exception 2: " + e.toString());
         }
-    }
-
-    public static Radio getInstance(){
-        return instance;
     }
 
     public void turnOff(){
