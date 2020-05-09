@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Radio</title>
+    <link rel="stylesheet" type="text/css" href="styles/radio.css">
+</head>
+    <body>
+
+        <!--    Radio stations       -->
+
+        <table id="stationsTable">
+            <td class="tableNamesLong">Name</td>
+            <td class="tableNames">URL</td>
+            <td class="tableNames">Delete</td>
+            <td class="tableNames">Play</td>
+            <tr th:each="station : ${stations}">
+                <td th:text = " ${station.name} "/>
+                <td th:text = " ${station.url} "/>
+                <td class="btnInputDeleteTable">
+                    <form th:action="@{radio/delete}" method="post"  onsubmit="return confirm('Do you want to delete this station?');">
+                        <input type="hidden" name="name" th:value="${station.name}" />
+                        <input  type="submit" value="Delete" class="btnInputDelete" />
+                    </form>
+                </td>
+                <td class="btnInputDeleteTable">
+                    <form th:action="@{radio/on}" method="post" >
+                        <input type="hidden" name="name" th:value="${station.name}" />
+                        <input  type="submit" value="Play" class="btnInputDelete" />
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+        <form th:action="@{radio/off}" method="post" >
+            <input class="collapsible" type="submit" value="STOP"/>
+        </form>
+
+        <button class="collapsible">Add radio station</button>
+        <div class="content">
+            <form action="#" th:action="@{radio/add}" th:object="${station}" method="post">
+                <label for="iname">Name:</label>
+                    <input id="iname" type="text"      th:field="*{name}" placeholder="Name..."/>
+                <label for="iurl">URL:</label>
+                    <input id="iurl" type="text"      th:field="*{url}" placeholder="Type..."/>
+                    <p> <input class="ibtn" type="submit" value="ADD"/> <input class="ibtn" type="reset" value="CLEAR"/></p>
+            </form>
+        </div>
+
+            <script>
+                var coll = document.getElementsByClassName("collapsible");
+                var i;
+
+                for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight){
+                    content.style.maxHeight = null;
+                    } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+                }
+            </script>
+
+    </body>
+
+</html>

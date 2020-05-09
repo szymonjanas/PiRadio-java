@@ -1,0 +1,104 @@
+html, body {
+    font-family: sans-serif;
+    height: 100%;
+}
+
+table {
+    margin-top: 2% !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20%;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+tr, td {
+    height: min-content;
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tableNamesShort{
+    font-weight: bold;
+    min-width: 5%;
+}
+
+.tableNames {
+    font-weight: bold;
+    min-width: 15%;
+}
+
+.tableNamesLong{
+    font-weight: bold;
+    min-width: 20%;
+}
+
+.btnInputDelete {
+    border: none;
+    color: blue;
+    width: 100%;
+    height: 100%;
+}
+
+.btnInputDeleteTable {
+    border: none;
+    border-collapse: unset;
+}
+
+.btnStop {
+    border: none;
+    border-collapse: unset;
+}
+
+.collapsible {
+    margin-top: 1%;
+    background-color: #777;
+    color: white;
+    height: 5%;
+    cursor: pointer;
+    width: 80%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 15px;
+    margin-left: 10%;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    margin-left: 10%;
+    max-height: 0;
+    width: 75%;
+    overflow: hidden;
+    transition: 0 0.2s ease-out;
+    background-color: #f1f1f1;
+    padding-left: 5%;
+}
+
+input[type="text"]{
+    min-width: 90%;
+    display: block;
+    padding: 1% 1%;
+    border-radius: 2pt;
+    border: 0pt;
+}
+
+.content form label {
+    display: block;
+    padding-top: 1%;
+    padding-bottom: 0.25%;
+}
+
+.ibtn {
+    height: 15%;
+    width: 20%;
+    margin-left: 10%;
+}
+
+.ibtn[type="submit"]{
+    margin-left: 20%;
+}
