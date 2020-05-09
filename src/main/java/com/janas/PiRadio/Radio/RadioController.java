@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/radio")
+@RequestMapping("/radio/api")
 public class RadioController {
 
     private final RadioProcessor radioProcessor;
