@@ -2,6 +2,7 @@ package com.janas.PiRadio.Radio;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 public class RadioProcessor {
@@ -20,7 +21,7 @@ public class RadioProcessor {
     }
 
     public HttpStatus initRadio(String name ){
-        path = radioStations.getStation(name);
+        path = radioStations.getStation(name).getUrl();
         return HttpStatus.OK;
     }
 
@@ -33,7 +34,7 @@ public class RadioProcessor {
                 }
                 return HttpStatus.NOT_ACCEPTABLE;
             } catch (Exception e){
-                System.out.println("Exception: " + e.toString());
+                System.out.println(TAG + ": " + e.toString());
                 return HttpStatus.NOT_ACCEPTABLE;
             }
         } else {
@@ -43,16 +44,27 @@ public class RadioProcessor {
     }
 
     public HttpStatus turnOffRadio(){
-        Radio.getInstance().turnOff();
+        try {
+            Radio.getInstance().turnOff();
+        } catch (Exception e){
+            System.out.println(TAG + " : " + e.toString() + " : Radio not init!");
+        }
         return HttpStatus.OK;
     }
 
-    public String getStations(){
-        return radioStations.getStationsNames();
+    public Iterable<RadioStationModel> getStations(){
+        return radioStations.getStations();
     }
 
     public HttpStatus addStation(String name, String url){
-        if (radioStations.postStation(name, url))
+        if (radioStations.postStation(new RadioStationModel(name, url)))
+            return HttpStatus.OK;
+        else
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    public HttpStatus addStation(RadioStationModel station){
+        if (radioStations.postStation(station))
             return HttpStatus.OK;
         else
             return HttpStatus.INTERNAL_SERVER_ERROR;
@@ -65,6 +77,10 @@ public class RadioProcessor {
             return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
+    public void index(Model model){
+        model.addAttribute("station", new RadioStationModel());
+        model.addAttribute("stations", getStations());
+    }
 
 
 }
