@@ -3,7 +3,118 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Radio</title>
-    <link rel="stylesheet" type="text/css" href="styles/radio.css">
+
+    <style>
+        html, body {
+        font-family: sans-serif;
+        height: 100%;
+        }
+
+        table {
+            margin-top: 2% !important;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 5%;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        tr, td {
+            height: min-content;
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tableNamesShort{
+            font-weight: bold;
+            min-width: 5%;
+        }
+
+        .tableNames {
+            font-weight: bold;
+            min-width: 15%;
+        }
+
+        .tableNamesLong{
+            font-weight: bold;
+            min-width: 20%;
+        }
+
+        .btnInputDelete {
+            border: none;
+            color: blue;
+            width: 100%;
+            height: 100%;
+        }
+
+        .btnInputDeleteTable {
+            border: none;
+            border-collapse: unset;
+        }
+
+        .btnStop {
+            border: none;
+            border-collapse: unset;
+        }
+
+        .collapsible {
+            margin-left: 25%;
+            margin-right: auto;
+            margin-top: 1%;
+            background-color: #777;
+            color: white;
+            height: 5%;
+            cursor: pointer;
+            width: 50%;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 15px;
+
+        }
+
+        .active, .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 0;
+            width: 45%;
+            overflow: hidden;
+            transition: 0 0.2s ease-out;
+            background-color: #f1f1f1;
+            padding-left: 5%;
+        }
+
+        input[type="text"]{
+            min-width: 90%;
+            display: block;
+            padding: 1% 1%;
+            border-radius: 2pt;
+            border: 0pt;
+        }
+
+        .content form label {
+            display: block;
+            padding-top: 1%;
+            padding-bottom: 0.25%;
+        }
+
+        .ibtn {
+            height: 15%;
+            width: 20%;
+            margin-left: 10%;
+        }
+
+        .ibtn[type="submit"]{
+            margin-left: 20%;
+        }
+
+    </style>
+
 </head>
     <body>
 
@@ -40,30 +151,32 @@
         <div class="content">
             <form action="#" th:action="@{radio/add}" th:object="${station}" method="post">
                 <label for="iname">Name:</label>
-                    <input id="iname" type="text"      th:field="*{name}" placeholder="Name..."/>
+                    <input id="iname" type="text"      th:field="*{name}" placeholder="name..."/>
                 <label for="iurl">URL:</label>
-                    <input id="iurl" type="text"      th:field="*{url}" placeholder="Type..."/>
+                    <input id="iurl" type="text"      th:field="*{url}" placeholder="url..."/>
                     <p> <input class="ibtn" type="submit" value="ADD"/> <input class="ibtn" type="reset" value="CLEAR"/></p>
             </form>
         </div>
 
-            <script>
-                var coll = document.getElementsByClassName("collapsible");
-                var i;
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
 
-                for (i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var content = this.nextElementSibling;
-                    if (content.style.maxHeight){
-                    content.style.maxHeight = null;
-                    } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    }
-                });
+            for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight){
+                content.style.maxHeight = null;
+                } else {
+                content.style.maxHeight = content.scrollHeight + "px";
                 }
-            </script>
+            });
+            }
+        </script>
 
     </body>
+
+
 
 </html>
