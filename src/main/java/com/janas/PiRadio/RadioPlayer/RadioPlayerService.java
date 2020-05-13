@@ -1,6 +1,6 @@
 package com.janas.PiRadio.RadioPlayer;
 
-import com.janas.PiRadio.Radio.RadioStationModel;
+import com.janas.PiRadio.RadioStations.RadioStationModel;
 import org.springframework.stereotype.Service;
 
 @Service

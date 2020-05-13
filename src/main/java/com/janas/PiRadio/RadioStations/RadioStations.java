@@ -1,4 +1,4 @@
-package com.janas.PiRadio.Radio;
+package com.janas.PiRadio.RadioStations;
 
 import com.janas.PiRadio.Support.OSValidator;
 import org.springframework.stereotype.Component;

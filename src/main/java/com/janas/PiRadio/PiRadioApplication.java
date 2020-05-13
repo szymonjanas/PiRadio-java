@@ -1,10 +1,8 @@
 package com.janas.PiRadio;
 
-import com.janas.PiRadio.Radio.RadioStations;
+import com.janas.PiRadio.RadioStations.RadioStations;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.awt.desktop.SystemSleepEvent;
 
 @SpringBootApplication
 public class PiRadioApplication {

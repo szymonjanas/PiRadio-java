@@ -1,4 +1,4 @@
-package com.janas.PiRadio.Radio;
+package com.janas.PiRadio.RadioStations;
 
 public class RadioStationModel {
 

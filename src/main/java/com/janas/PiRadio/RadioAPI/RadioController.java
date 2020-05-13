@@ -1,5 +1,6 @@
-package com.janas.PiRadio.Radio;
+package com.janas.PiRadio.RadioAPI;
 
+import com.janas.PiRadio.RadioProcessor.RadioProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

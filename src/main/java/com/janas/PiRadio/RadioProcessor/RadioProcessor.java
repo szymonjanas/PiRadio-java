@@ -1,6 +1,8 @@
-package com.janas.PiRadio.Radio;
+package com.janas.PiRadio.RadioProcessor;
 
 import com.janas.PiRadio.RadioPlayer.RadioPlayerService;
+import com.janas.PiRadio.RadioStations.RadioStationModel;
+import com.janas.PiRadio.RadioStations.RadioStations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
