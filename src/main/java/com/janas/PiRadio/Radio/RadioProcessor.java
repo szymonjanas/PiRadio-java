@@ -1,5 +1,6 @@
 package com.janas.PiRadio.Radio;
 
+import com.janas.PiRadio.RadioPlayer.RadioPlayerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -9,11 +10,13 @@ public class RadioProcessor {
     private static final String TAG = RadioProcessor.class.getSimpleName();
 
     private final RadioStations radioStations;
+    private final RadioPlayerService radioPlayer;
 
-    private String path = null;
+    private RadioStationModel station = null;
 
-    public RadioProcessor(RadioStations radioStations) {
+    public RadioProcessor(RadioStations radioStations, RadioPlayerService radioPlayer) {
         this.radioStations = radioStations;
+        this.radioPlayer = radioPlayer;
     }
 
     public HttpStatus validate(){
@@ -21,15 +24,15 @@ public class RadioProcessor {
     }
 
     public HttpStatus initRadio(String name ){
-        path = radioStations.getStation(name).getUrl();
+        station = radioStations.getStation(name);
         return HttpStatus.OK;
     }
 
     public HttpStatus turnOnRadio(){
-        if (path != null){
+        if (station != null){
             try {
-                if (path.length() > 0){
-                    Radio.init(path);
+                if (station.getUrl().length() > 0){
+                    radioPlayer.turnOn(station);
                     return HttpStatus.OK;
                 }
                 return HttpStatus.NOT_ACCEPTABLE;
@@ -38,16 +41,16 @@ public class RadioProcessor {
                 return HttpStatus.NOT_ACCEPTABLE;
             }
         } else {
-            System.out.println(TAG + ": Radio is not initialized!");
+            System.out.println(TAG + ": station is not initialized!");
             return HttpStatus.NOT_ACCEPTABLE;
         }
     }
 
     public HttpStatus turnOffRadio(){
         try {
-            Radio.getInstance().turnOff();
+            radioPlayer.turnOff();
         } catch (Exception e){
-            System.out.println(TAG + " : " + e.toString() + " : Radio not init!");
+            System.out.println(TAG + " : " + e.toString() + " : radioPlayer is not initialized!");
         }
         return HttpStatus.OK;
     }
@@ -81,6 +84,5 @@ public class RadioProcessor {
         model.addAttribute("station", new RadioStationModel());
         model.addAttribute("stations", getStations());
     }
-
 
 }
